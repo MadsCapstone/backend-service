@@ -3,18 +3,29 @@ from flask_restx import Api, Resource, fields
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+import argparse
+
+db_conn = None
+db_env = None
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
+# if db_env == 'prod':
+#     pass
+# elif db_env == 'test':
+#     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///local-test.sqlite'
+# else:
+#     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///local-test.sqlite'
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 
-api = Api(app, version='1.0', title='TodoMVC API',
-    description='A simple TodoMVC API',
+api = Api(app, version='1.0', title='Capstone Project API',
+    description='API endpoints for getting data about our project',
 )
 
+# example todo project to give some visuals
 ns = api.namespace('todos', description='TODO operations')
 
 todo = api.model('Todo', {
@@ -99,4 +110,10 @@ class Todo(Resource):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='setup run attributes to be used from command line')
+    parser.add_argument('--env', type=str, nargs=1 , help='how to run the app and which db to use')
+    parser.add_argument('--conn', type=str, nargs=1, help='Local or Cloud Database')
+    args = parser.parse_args()
+    db_type = args.db
+
     app.run(debug=True)
