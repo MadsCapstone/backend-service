@@ -1,3 +1,7 @@
 .idea/
 venv/
 local-test.sqlite
+.tox/
+pip-wheel-metadata
+.env
+*.egg-info
