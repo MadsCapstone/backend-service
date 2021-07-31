@@ -1,7 +1,6 @@
 alembic==1.6.5
 aniso8601==9.0.1
 attrs==21.2.0
--e git+https://github.com/MadsCapstone/backend-service.git@f84c4a1fea0912449bf6dadbe04d2cdbf1754901#egg=backend_api
 backports.entry-points-selectable==1.1.0
 bcrypt==3.2.0
 certifi==2021.5.30

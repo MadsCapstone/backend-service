@@ -1,21 +1,24 @@
 """Flask CLI/Application entry point."""
 import os
+
 import click
+
 from backend_api import create_app, db
-from backend_api.models.user import  User
 from backend_api.models.token_blacklist import BlacklistedToken
+from backend_api.models.user import User
+
 
 app = create_app(os.getenv("FLASK_ENV", "development"))
 
 
 @app.shell_context_processor
 def shell():
-    """ Add any new databases here"""
     return {
         "db": db,
         "User": User,
-        'BlacklistedToken': BlacklistedToken
+        "BlacklistedToken": BlacklistedToken
     }
+
 
 @app.cli.command("add-user", short_help="Add a new user")
 @click.argument("email")
@@ -36,4 +39,3 @@ def add_user(email, admin, password):
     message = f"Successfully added new {user_type}:\n {new_user}"
     click.secho(message, fg="blue", bold=True)
     return 0
-
