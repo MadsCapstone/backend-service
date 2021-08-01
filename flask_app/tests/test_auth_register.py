@@ -2,7 +2,7 @@
 from http import HTTPStatus
 
 from backend_api.models.user import User
-from tests.util import EMAIL, PASSWORD, register_user, BAD_REQUEST
+from flask_app.tests.util import EMAIL, PASSWORD, register_user, BAD_REQUEST
 
 SUCCESS = "successfully registered"
 EMAIL_ALREADY_EXISTS = f"{EMAIL} is already registered"

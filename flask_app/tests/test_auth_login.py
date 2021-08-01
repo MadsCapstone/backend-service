@@ -2,7 +2,7 @@
 from http import HTTPStatus
 
 from backend_api.models.user import User
-from tests.util import EMAIL, register_user, login_user
+from flask_app.tests.util import EMAIL, register_user, login_user
 
 SUCCESS = "successfully logged in"
 UNAUTHORIZED = "email or password does not match"

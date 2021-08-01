@@ -2,7 +2,7 @@
 from http import HTTPStatus
 
 from backend_api.models.token_blacklist import BlacklistedToken
-from tests.util import register_user, login_user, logout_user, WWW_AUTH_NO_TOKEN
+from flask_app.tests.util import register_user, login_user, logout_user, WWW_AUTH_NO_TOKEN
 
 SUCCESS = "successfully logged out"
 TOKEN_BLACKLISTED = "Token blacklisted. Please log in again."

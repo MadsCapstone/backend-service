@@ -7,6 +7,7 @@ DESCRIPTION = (
     "tox configured"
 )
 APP_ROOT = Path(__file__).parent
+print(APP_ROOT)
 README = (APP_ROOT / "README.md").read_text()
 AUTHOR = "Ermias Bizuwork"
 AUTHOR_EMAIL = "ebizuwork@gmail.com"

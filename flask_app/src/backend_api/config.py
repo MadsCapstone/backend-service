@@ -4,14 +4,16 @@ from pathlib import Path
 
 
 HERE = Path(__file__).parent
-SQLITE_DEV = "sqlite:///" + str(HERE / "backend_api_dev.db")
-SQLITE_TEST = "sqlite:///" + str(HERE / "backend_api_test.db")
-SQLITE_PROD = "sqlite:///" + str(HERE / "backend_api_prod.db")
+FLASK_APP_DIR = HERE.parent.parent
+SQLITE_DEV = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_dev.db")
+SQLITE_TEST = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_test.db")
+SQLITE_PROD = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_prod.db")
+CLOUDSQL_NP = ""
+MIGRATIONS = os.path.join(FLASK_APP_DIR, 'migrations')
 
 
 class Config:
     """Base configuration."""
-
     SECRET_KEY = os.getenv("SECRET_KEY", "open sesame")
     BCRYPT_LOG_ROUNDS = 4
     TOKEN_EXPIRE_HOURS = 0
@@ -21,6 +23,7 @@ class Config:
     SWAGGER_UI_DOC_EXPANSION = "list"
     RESTX_MASK_SWAGGER = False
     JSON_SORT_KEYS = False
+    MIGRATIONS_FOLDER = os.getenv("MIGRATIONS_DIR", MIGRATIONS)
 
 
 class TestingConfig(Config):
@@ -36,6 +39,15 @@ class DevelopmentConfig(Config):
     TOKEN_EXPIRE_MINUTES = 15
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", SQLITE_DEV)
 
+class CloudNonProduction(Config):
+    TOKEN_EXPIRE_HOURS = 20
+    SQLALCHEMY_DATABASE_URI = os.getenv("CLOUD_NP_DATABASE_URL")
+
+class CloudProductionConfig(Config):
+    TOKEN_EXPIRE_HOURS = 1
+    BCRYPT_LOG_ROUNDS = 13
+    SQLALCHEMY_DATABASE_URI = os.getenv("CLOUD_PROD_DATABASE_URL")
+    PRESERVE_CONTEXT_ON_EXCEPTION = True
 
 class ProductionConfig(Config):
     """Production configuration."""
@@ -47,7 +59,7 @@ class ProductionConfig(Config):
 
 
 ENV_CONFIG_DICT = dict(
-    development=DevelopmentConfig, testing=TestingConfig, production=ProductionConfig
+    development=DevelopmentConfig, testing=TestingConfig, production=ProductionConfig, cloudnp=CloudNonProduction, cloudprod=CloudProductionConfig
 )
 
 
