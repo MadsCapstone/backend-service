@@ -1,4 +1,4 @@
-name: NGINX - Pipeline (Build,Deploy,Service)
+name: FLASK_APP - Pipeline (Build,Deploy,Service)
 
 on:
   push:
@@ -11,7 +11,8 @@ env:
 #  GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
   CLUSTER_ZONE: us-central1-a
   CLUSTER_NAME: capstone-project-cluster
-  IMAGE: nginx
+  IMAGE_FLASK: flask_app
+  IMAGE_NGINX: nginx
   IMAGE_NAME: gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE
 
 jobs:
@@ -44,7 +45,9 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |-
-        docker build --tag "gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE" ./nginx
+        docker build --tag "gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE" ./flask_app
+
+
 
     # Push to container registry in gcp
     - name: Publish
@@ -54,9 +57,9 @@ jobs:
     # Kubernetes Deployment of the pods for nginx to run specs located in yaml file
     - name: Deploy to Cluster
       run: |-
-        kubectl apply -f ./kubefiles/nginx-deploy.yaml
+        kubectl apply -f ./kubefiles/flask_app-deploy.yaml
 
     # Kubernetes creation of the Service for nginx
     - name: Create NGINX Service
       run: |-
-        kubectl apply -f ./kubefiles/nginx-service.yaml
+        kubectl apply -f ./kubefiles/flask_app-service.yaml

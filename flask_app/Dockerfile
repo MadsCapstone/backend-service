@@ -5,4 +5,4 @@ WORKDIR /flask_app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 RUN pip install .
-RUN gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app
+#RUN gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app

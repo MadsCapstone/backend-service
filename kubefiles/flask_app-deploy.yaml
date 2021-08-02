@@ -17,4 +17,7 @@ spec:
         image: gcr.io/ermias-biz/capstone-project-cluster-flask_app:latest
         ports:
         - containerPort: 80
+        command: ["gunicorn"]
+        args: ["-w", "1", "-b", "0.0.0.0:8000", "wsgi:app"]
+
         imagePullPolicy: Always
