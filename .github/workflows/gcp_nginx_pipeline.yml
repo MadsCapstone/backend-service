@@ -51,6 +51,8 @@ jobs:
       run: |-
         docker push "gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE"
 
-#    - name: Deploy
-#      run: |-
-#        kubectl
+    # Kubernetes Deployment of the pods for nginx to run specs located in yaml file
+    - name: Deploy to Cluster
+      run: |-
+        kubectl apply -f ./nginx-deploy.yaml
+
