@@ -30,6 +30,11 @@ jobs:
         service_account_key: ${{ secrets.GCE_SA_KEY }}
         project_id: ${{ secrets.GCE_PROJECT }}
 
+    # Configure Docker to use the gcloud command-line tool as a credential
+    # helper for authentication
+    - run: |-
+        gcloud --quiet auth configure-docker
+
     # Setup kubeconfig to point to cluster
     - name: kubeconfig setup
       run: |-
