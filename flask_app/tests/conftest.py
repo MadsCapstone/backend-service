@@ -4,7 +4,7 @@ import pytest
 from backend_api import create_app
 from backend_api import db as database
 from backend_api.models.user import User
-from flask_app.tests.util import EMAIL, PASSWORD
+from tests.util import EMAIL, PASSWORD
 
 
 @pytest.fixture
