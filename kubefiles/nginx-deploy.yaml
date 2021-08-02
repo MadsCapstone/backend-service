@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: gcr.io/ermias-biz/capstone-project-cluster-nginx:latest
         ports:
         - containerPort: 80

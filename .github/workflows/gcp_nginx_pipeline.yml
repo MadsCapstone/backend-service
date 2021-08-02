@@ -54,5 +54,9 @@ jobs:
     # Kubernetes Deployment of the pods for nginx to run specs located in yaml file
     - name: Deploy to Cluster
       run: |-
-        kubectl apply -f ./nginx-deploy.yaml
+        kubectl apply -f ./kubefiles/nginx-deploy.yaml
 
+    # Kubernetes creation of the Service for nginx
+    - name: Create NGINX Service
+      run: |-
+        kubectl apply -f ./kubefiles/nginx-service.yaml
