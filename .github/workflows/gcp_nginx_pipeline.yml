@@ -39,7 +39,7 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |-
-        docker build --tag $IMAGE_NAME ./nginx
+        docker build --tag "$IMAGE_NAME" ./nginx
 
     # Push to container registry in gcp
     - name: Publish
