@@ -9,7 +9,7 @@ env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
   CLUSTER_ZONE: us-central1-a
   CLUSTER_NAME: capstone-project-cluster
-  IMAGE_FLASK: flask_app
+  IMAGE_FLASK: flask-app
   IMAGE_NGINX: nginx
   IMAGE_NAME: gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE
 

@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask_app
+  name: flask-app
   labels:
-    run: flask_app
+    run: flask-app
 spec:
   ports:
   - port: 8000
     protocol: TCP
   selector:
-    run: flask_app
+    run: flask-app
