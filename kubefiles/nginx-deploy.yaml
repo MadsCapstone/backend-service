@@ -12,9 +12,19 @@ spec:
       labels:
         run: nginx
     spec:
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: nginxsecret
       containers:
       - name: nginx
         image: gcr.io/ermias-biz/capstone-project-cluster-nginx:latest
         ports:
-        - containerPort: 80
+          - containerPort: 443
+          - containerPort: 80
+          volumeMounts:
+            - mountPath: /etc/nginx/ssl
+              name: secret-volume
+#            - mountPath: /etc/nginx/conf.d
+#              name: configmap-volume
         imagePullPolicy: Always

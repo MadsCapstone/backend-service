@@ -7,6 +7,9 @@ metadata:
 spec:
   ports:
   - port: 8000
+    name: http
     protocol: TCP
+    targetPort: 8000
   selector:
     run: flask-app
+  type: NodePort

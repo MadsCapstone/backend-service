@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fanout-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: capstone-project-prod-ip
+spec:
+  rules:
+  - host:
+    http:
+      paths:
+      - path: /flask-app
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: flask-app
+            port:
+              number: 8000
+#      - path: /bar
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: service2
+#            port:
+#              number: 8080
