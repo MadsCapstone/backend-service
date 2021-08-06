@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+spec:
+  selector:
+    matchLabels:
+      run: flask-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: gcr.io/ermias-biz/capstone-project-cluster-flask-app:latest
+        ports:
+        - containerPort: 8000
+        command: ["gunicorn"]
+        args: ["-w", "1", "-b", "0.0.0.0:8000", "wsgi:app"]
+        imagePullPolicy: Always

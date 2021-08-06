@@ -11,6 +11,12 @@ from backend_api.models.user import User
 app = create_app(os.getenv("FLASK_ENV", "development"))
 
 
+@app.route("/")
+def flask_landing():
+    return """
+        <b>Welcome to Flask App Index Page</b>
+    """
+
 @app.shell_context_processor
 def shell():
     return {
