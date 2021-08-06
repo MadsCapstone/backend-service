@@ -7,57 +7,54 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
-#  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
-#  GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
-  CLUSTER_ZONE: us-central1-a
-  CLUSTER_NAME: capstone-project-cluster
+  CLUSTER_ZONE: ${{ secrets.CLUSTER_ZONE }}
+  CLUSTER_NAME: ${{ secrets.PROD_CLUSTER_NAME }}
   IMAGE_FLASK: flask-app
-  IMAGE_NGINX: nginx
   IMAGE_NAME: gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE
 
 jobs:
-  setup-build-publish-deploy-service:
-    name: Setup, Build, Publish, and Deploy
+  FLASK-PIPELINE:
+    name: FLASK_APP Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    # Setup gcloud CLI
-    - uses: google-github-actions/setup-gcloud@master
-      with:
-        version: '290.0.1'
-        service_account_key: ${{ secrets.GCE_SA_KEY }}
-        project_id: ${{ secrets.GCE_PROJECT }}
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          service_account_key: ${{ secrets.GCE_SA_KEY }}
+          project_id: ${{ secrets.GCE_PROJECT }}
 
-    # Configure Docker to use the gcloud command-line tool as a credential
-    # helper for authentication
-    - run: |-
-        gcloud --quiet auth configure-docker
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+      - run: |-
+          gcloud --quiet auth configure-docker
 
-    # Setup kubeconfig to point to cluster
-    - name: kubeconfig setup
-      run: |-
-        gcloud container clusters get-credentials --zone $CLUSTER_ZONE $CLUSTER_NAME
+      # Setup kubeconfig to point to cluster
+      - name: Kubeconfig setup
+        run: |-
+          gcloud container clusters get-credentials --zone $CLUSTER_ZONE $CLUSTER_NAME
 
-    # Build docker image for nginx
-    # Build the Docker image
-    - name: Build
-      run: |-
-        docker build --tag "gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE_FLASK" ./flask_app
+      # Build docker image for flask
+      # Build the Docker image
+      - name: Build Flask Image
+        run: |-
+          docker build --tag "gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE_FLASK" ./flask_app
 
-    # Push to container registry in gcp
-    - name: Publish
-      run: |-
-        docker push "gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE_FLASK"
+      # Push to container registry in gcp
+      - name: Publish Flask Image to Container Registry
+        run: |-
+          docker push "gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE_FLASK"
 
-    # Kubernetes Deployment of the pods for nginx to run specs located in yaml file
-    - name: Deploy to Cluster
-      run: |-
-        kubectl apply -f ./kubefiles/flask_app-deploy.yaml
+      # Kubernetes Deployment of the pods for flask_app to run specs located in yaml file
+      - name: Deploy Flask to Cluster
+        run: |-
+          kubectl apply -f ./kubefiles/flask_app-deploy.yaml
 
-    # Kubernetes creation of the Service for nginx
-    - name: Create NGINX Service
-      run: |-
-        kubectl apply -f ./kubefiles/flask_app-service.yaml
+      # Kubernetes creation of the Service for flask_app
+      - name: Create Flask Service
+        run: |-
+          kubectl apply -f ./kubefiles/flask_app-service.yaml

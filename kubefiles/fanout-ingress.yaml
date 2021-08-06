@@ -4,22 +4,34 @@ metadata:
   name: fanout-ingress
   annotations:
     kubernetes.io/ingress.global-static-ip-name: capstone-project-prod-ip
+#    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+#    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  tls:
+  - hosts:
+      - the-ripple-effect.app
+      - app.the-ripple-effect.app
+      - api.the-ripple-effect.app
+    secretName: ingress-certificate-prod
   rules:
-  - host:
+  - host: api.the-ripple-effect.app
     http:
       paths:
-      - path: /flask-app
+      - path: /*
         pathType: ImplementationSpecific
         backend:
           service:
             name: flask-app
             port:
-              number: 8000
-#      - path: /bar
-#        pathType: Prefix
-#        backend:
-#          service:
-#            name: service2
-#            port:
-#              number: 8080
+              number: 80
+  - host: app.the-ripple-effect.app
+    http:
+      paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80

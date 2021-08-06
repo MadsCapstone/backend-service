@@ -73,3 +73,5 @@ class LogoutUser(Resource):
     def post(self):
         """Add token to blacklist, deauthenticating the current user."""
         return process_logout_request()
+
+

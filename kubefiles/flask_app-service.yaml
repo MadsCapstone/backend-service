@@ -6,10 +6,15 @@ metadata:
     run: flask-app
 spec:
   ports:
-  - port: 8000
+  - port: 80
     name: http
     protocol: TCP
     targetPort: 8000
+#  - port : 443
+#    name: https
+#    protocol: TCP
+#    targetPort: 8000
   selector:
     run: flask-app
   type: NodePort
+#  loadBalancerIP: 34.149.74.164

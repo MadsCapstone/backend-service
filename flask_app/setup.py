@@ -29,7 +29,6 @@ INSTALL_REQUIRES = [
     "requests",
     "urllib3",
     "werkzeug==0.16.1",
-
 ]
 EXTRAS_REQUIRE = {
     "dev": [
