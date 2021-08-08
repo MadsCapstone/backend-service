@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: gcr.io/ermias-biz/capstone-project-cluster-flask-app:latest
+        image: gcr.io/ermias-biz/capstone-project-cluster-prod-flask-app:latest
         ports:
         - containerPort: 8000
         command: ["gunicorn"]

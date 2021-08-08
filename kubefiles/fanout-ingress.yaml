@@ -13,7 +13,7 @@ spec:
       - the-ripple-effect.app
       - app.the-ripple-effect.app
       - api.the-ripple-effect.app
-    secretName: ingress-certificate-prod
+    secretName: ingress-certificate-prod-v2
   rules:
   - host: api.the-ripple-effect.app
     http:

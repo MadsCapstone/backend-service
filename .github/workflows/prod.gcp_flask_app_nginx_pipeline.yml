@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
   CLUSTER_ZONE: ${{ secrets.CLUSTER_ZONE }}
-  CLUSTER_NAME: ${{ secrets.PROD_CLUSTER_NAME }}
+  CLUSTER_NAME: ${{ secrets.PROD_CLUSTER_NAME_V2 }}
   IMAGE_FLASK: flask-app
   IMAGE_NAME: gcr.io/$PROJECT_ID/$CLUSTER_NAME-$IMAGE
 

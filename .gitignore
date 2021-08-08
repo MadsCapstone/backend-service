@@ -7,3 +7,5 @@ pip-wheel-metadata
 *.egg-info
 secrets/
 *.db
+__pycache__
+acme_issuer_private_key.yaml
