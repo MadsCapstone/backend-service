@@ -58,3 +58,8 @@ jobs:
       - name: Create Flask Service
         run: |-
           kubectl apply -f ./kubefiles/flask_app-service.yaml
+
+      # Perform rolling update
+      - name: Rolling Update
+        run: |-
+          kubectl rollout restart deployment flask-app
