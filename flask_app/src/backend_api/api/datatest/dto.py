@@ -1,10 +1,9 @@
-"""Parsers and serializers for /auth API endpoints."""
+from backend_api import ma, db
+from backend_api.models.datatest import Datatest
 from flask_restx import Model
 from flask_restx.fields import String, Boolean
 from flask_restx.inputs import email
 from flask_restx.reqparse import RequestParser
-
-
 
 auth_reqparser = RequestParser(bundle_errors=True)
 auth_reqparser.add_argument(
@@ -14,8 +13,12 @@ auth_reqparser.add_argument(
     name="password", type=str, location="form", required=True, nullable=False
 )
 
-user_model = Model(
-    "User",
+class DatatestSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Datatest
+
+datatest_model = Model(
+    "Datatest",
     {
         "email": String,
         "public_id": String,
@@ -25,5 +28,6 @@ user_model = Model(
     },
 )
 
+datatest_model_ma = DatatestSchema()
 
 

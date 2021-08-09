@@ -8,7 +8,8 @@ FLASK_APP_DIR = HERE.parent.parent
 SQLITE_DEV = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_dev.db")
 SQLITE_TEST = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_test.db")
 SQLITE_PROD = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_prod.db")
-CLOUDSQL_NP = ""
+CLOUDSQL_LOCAL = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@0.0.0.0:5432/{os.getenv('DB_NAME')}"
+CLOUDSQL_PROD = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@localhost:5432/{os.getenv('DB_NAME')}"
 MIGRATIONS = os.path.join(FLASK_APP_DIR, 'migrations')
 
 
@@ -35,7 +36,6 @@ class TestingConfig(Config):
 
 class DevelopmentConfig(Config):
     """Development configuration."""
-
     TOKEN_EXPIRE_MINUTES = 15
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", SQLITE_DEV)
 
@@ -43,23 +43,23 @@ class CloudNonProduction(Config):
     TOKEN_EXPIRE_HOURS = 20
     SQLALCHEMY_DATABASE_URI = os.getenv("CLOUD_NP_DATABASE_URL")
 
-class CloudProductionConfig(Config):
+class LocalProductionConfig(Config):
+    """Local Connection Details For """
     TOKEN_EXPIRE_HOURS = 1
     BCRYPT_LOG_ROUNDS = 13
-    SQLALCHEMY_DATABASE_URI = os.getenv("CLOUD_PROD_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = CLOUDSQL_LOCAL
     PRESERVE_CONTEXT_ON_EXCEPTION = True
 
 class ProductionConfig(Config):
     """Production configuration."""
-
     TOKEN_EXPIRE_HOURS = 1
     BCRYPT_LOG_ROUNDS = 13
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", SQLITE_PROD)
+    SQLALCHEMY_DATABASE_URI = CLOUDSQL_PROD
     PRESERVE_CONTEXT_ON_EXCEPTION = True
 
 
 ENV_CONFIG_DICT = dict(
-    development=DevelopmentConfig, testing=TestingConfig, production=ProductionConfig, cloudnp=CloudNonProduction, cloudprod=CloudProductionConfig
+    development=DevelopmentConfig, testing=TestingConfig, production=ProductionConfig, localprod=LocalProductionConfig
 )
 
 

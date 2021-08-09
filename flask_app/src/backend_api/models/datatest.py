@@ -21,8 +21,8 @@ class Datatest(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), unique=True, nullable=False)
-    date = db.Column(db.DateTime, default=utc_now)
-    data = db.Column(db.JSON, )
+    date = db.Column(db.DateTime)
+    data = db.Column(db.String(255))
 
     def __repr__(self):
         return (
@@ -36,4 +36,8 @@ class Datatest(db.Model):
     @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
+
+    @classmethod
+    def get_all_records(cls):
+        return cls.query.all()
 

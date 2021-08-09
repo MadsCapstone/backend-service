@@ -6,15 +6,23 @@ import click
 from backend_api import create_app, db
 from backend_api.models.token_blacklist import BlacklistedToken
 from backend_api.models.user import User
+from backend_api.models.datatest import Datatest
 
-
-app = create_app(os.getenv("FLASK_ENV", "development"))
+CONFIG = os.getenv("FLASK_ENV", "production")
+app = create_app(CONFIG)
 
 
 @app.route("/")
 def flask_landing():
-    return """
-        <b>Welcome to Flask App Index Page</b>
+    return f"""
+        <b>Flask App Index Page</b>
+        <br>
+        Your app is set to config: {CONFIG}
+        <br>
+        There really is nothing to see here...
+        <br>
+        Header over to 
+        <a href="https://api.the-ripple-effect.app/api/v1/ui"> The Swagger Page </a>
     """
 
 @app.shell_context_processor
@@ -22,7 +30,8 @@ def shell():
     return {
         "db": db,
         "User": User,
-        "BlacklistedToken": BlacklistedToken
+        "BlacklistedToken": BlacklistedToken,
+        "Datatest": Datatest
     }
 
 

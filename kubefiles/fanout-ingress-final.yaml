@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: fanout-ingress
+  name: fanout-ingress-prod
   annotations:
     kubernetes.io/ingress.global-static-ip-name: capstone-project-prod-ip
 #    kubernetes.io/ingress.class: "nginx"
@@ -13,7 +13,7 @@ spec:
       - the-ripple-effect.app
       - app.the-ripple-effect.app
       - api.the-ripple-effect.app
-    secretName: ingress-certificate-prod-v2
+    secretName: ingress-certificate-prod
   rules:
   - host: api.the-ripple-effect.app
     http:

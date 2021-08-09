@@ -8,4 +8,4 @@ pip-wheel-metadata
 secrets/
 *.db
 __pycache__
-acme_issuer_private_key.yaml
+kubefiles/acme_issuer_private_key.yaml
