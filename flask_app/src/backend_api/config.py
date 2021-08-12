@@ -8,8 +8,8 @@ FLASK_APP_DIR = HERE.parent.parent
 SQLITE_DEV = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_dev.db")
 SQLITE_TEST = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_test.db")
 SQLITE_PROD = "sqlite:///" + str(FLASK_APP_DIR / "backend_api_prod.db")
-CLOUDSQL_LOCAL = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@0.0.0.0:5432/{os.getenv('DB_NAME')}"
-CLOUDSQL_PROD = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@localhost:5432/{os.getenv('DB_NAME')}"
+CLOUDSQL_LOCAL = f"postgresql://{os.getenv('DB_USER', None)}:{os.getenv('DB_PASS', None)}@0.0.0.0:5432/{os.getenv('DB_NAME', None)}"
+CLOUDSQL_PROD = f"postgresql://{os.getenv('DB_USER', None)}:{os.getenv('DB_PASS', None)}@localhost:5432/{os.getenv('DB_NAME',None)}"
 MIGRATIONS = os.path.join(FLASK_APP_DIR, 'migrations')
 
 

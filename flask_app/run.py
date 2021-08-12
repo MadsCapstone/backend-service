@@ -7,6 +7,8 @@ from backend_api import create_app, db
 from backend_api.models.token_blacklist import BlacklistedToken
 from backend_api.models.user import User
 from backend_api.models.datatest import Datatest
+from backend_api.models.species import species_tables
+from backend_api.models.waterbody import waterbody_tables
 
 CONFIG = os.getenv("FLASK_ENV", "production")
 app = create_app(CONFIG)
@@ -31,7 +33,9 @@ def shell():
         "db": db,
         "User": User,
         "BlacklistedToken": BlacklistedToken,
-        "Datatest": Datatest
+        "Datatest": Datatest,
+        **species_tables,
+        **waterbody_tables
     }
 
 

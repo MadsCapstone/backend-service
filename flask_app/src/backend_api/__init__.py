@@ -15,6 +15,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
 ma = Marshmallow()
+cors = CORS()
 
 def create_app(config_name):
     app = Flask("backend_api")
@@ -29,4 +30,5 @@ def create_app(config_name):
     ma.init_app(app)
     migrate.init_app(app, db, directory=app_config.MIGRATIONS_FOLDER)
     bcrypt.init_app(app)
+    app.db = db
     return app

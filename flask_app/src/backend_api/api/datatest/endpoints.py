@@ -20,5 +20,7 @@ class AllData(Resource):
     def get(self):
         """Get all test data"""
         return jsonify(
-            data="all the fucking data you will ever want"
+            data="all the data you will ever want"
         )
+
+
