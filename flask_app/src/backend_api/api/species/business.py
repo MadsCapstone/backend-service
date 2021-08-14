@@ -52,5 +52,5 @@ def get_species_observations(id):
     if payload:
         return payload
     else:
-        return {}
+        return []
 
