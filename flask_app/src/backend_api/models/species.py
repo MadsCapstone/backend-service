@@ -36,7 +36,7 @@ class InvasiveSpecies(db.Model):
 
     @classmethod
     def get_all(cls):
-        return cls.query.order_by(text("name collate nocase asc")).all()
+        return cls.query.order_by(text("name asc")).all()
 
 class SpeciesObservedWaterbody(db.Model):
     """Describes a relationship between invasive species sighting
