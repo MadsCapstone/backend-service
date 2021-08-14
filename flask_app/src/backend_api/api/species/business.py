@@ -12,6 +12,7 @@ from backend_api.models.waterbody import WaterBodyGeoJson, WaterBodyGeoJsonSchem
 from colour import Color as c
 from backend_api import db
 from sqlalchemy import asc, text
+from backend_api.util.result import Result
 
 def get_invasive_species():
     invasive = InvasiveSpecies()
@@ -21,20 +22,25 @@ def get_invasive_species():
     return all_invasive
 
 def get_color_scale(data):
-    red = c("red")
-    yellow = c("yellow")
-    max_ = []
-    for i in data:
-        max_.append(i['distance'])
-    max_= max(max_)
-    colors = red.range_to(yellow, max_+1)
-    colors = {i: c.hex for i, c in enumerate(colors)}
-    new_data = []
-    for i in data:
-        color = colors[i['distance']]
-        i['color'] = color
-        new_data.append(i)
-    return new_data
+    if len(data) == 0:
+        return False
+    else:
+        red = c("red")
+        yellow = c("yellow")
+        max_ = []
+        for i in data:
+            max_.append(i['distance'])
+        if len(max_)>0:
+            colors = red.range_to(yellow, max(max_)+1)
+            colors = {i: c.hex for i, c in enumerate(colors)}
+            new_data = []
+            for i in data:
+                color = colors[i['distance']]
+                i['color'] = color
+                new_data.append(i)
+            return new_data
+        else:
+            return False
 
 
 def get_species_observations(id):
@@ -43,5 +49,8 @@ def get_species_observations(id):
     schema = SpeciesObservedWaterbodySchema()
     payload = schema.dump(data, many=True)
     payload = get_color_scale(payload)
-    return payload
+    if payload:
+        return payload
+    else:
+        return {}
 

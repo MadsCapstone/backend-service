@@ -9,7 +9,7 @@ from flask_restx.reqparse import RequestParser
 
 species_reqparser = RequestParser(bundle_errors=True)
 species_reqparser.add_argument(
-    name="species_id", type=int, location="form", required=True, nullable=False
+    name="species_id", type=int, location="json", required=True, nullable=False
 )
 
 species_model = Model(

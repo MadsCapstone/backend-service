@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-
+from flask_compress import Compress
 from backend_api.config import get_config
 
 cors = CORS()
@@ -16,6 +16,7 @@ migrate = Migrate()
 bcrypt = Bcrypt()
 ma = Marshmallow()
 cors = CORS()
+compress = Compress()
 
 def create_app(config_name):
     app = Flask("backend_api")
@@ -26,6 +27,7 @@ def create_app(config_name):
     app.register_blueprint(api_bp)
 
     cors.init_app(app)
+    compress.init_app(app)
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db, directory=app_config.MIGRATIONS_FOLDER)
