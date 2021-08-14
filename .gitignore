@@ -9,3 +9,5 @@ secrets/
 *.db
 __pycache__
 kubefiles/acme_issuer_private_key.yaml
+csv-data
+.DS_Store
