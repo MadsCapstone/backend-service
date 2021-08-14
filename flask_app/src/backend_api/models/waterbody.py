@@ -29,8 +29,6 @@ class Waterbody(db.Model):
 class WaterBodyEdges(db.Model):
     """Stores the information for connected waterbodies"""
     __tablename__ = "waterbody_edges"
-
-
     nodei_id = db.Column(db.Integer, primary_key=True)
     nodef_id = db.Column(db.Integer, primary_key=True)
 
@@ -63,6 +61,12 @@ class WaterBodyGeoJson(db.Model):
 class WaterBodyGeoJsonSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = WaterBodyGeoJson
+        include_relationships = True
+        load_instance = True
+
+class WaterBodySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Waterbody
         include_relationships = True
         load_instance = True
 

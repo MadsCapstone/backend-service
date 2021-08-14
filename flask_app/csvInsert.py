@@ -3,8 +3,8 @@ from sqlalchemy import create_engine
 import pandas as pd
 import os
 
-engine = create_engine('sqlite:///backend_api_dev.db')
-# engine = create_engine(f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@0.0.0.0:5432/{os.getenv('DB_NAME')}")
+# engine = create_engine('sqlite:///backend_api_dev.db')
+engine = create_engine(f"postgresql://flask-app:capstone-db-user-!@localhost:5432/core-db")
 
 waterbody_geojson_df = pd.read_csv('../csv-data/waterbody_geojsonsv2.csv')
 waterbody_geojson_df.to_sql(
@@ -39,7 +39,7 @@ invaders_df.to_sql(
     if_exists='replace'
 )
 
-species_observed_df = pd.read_csv('../csv-data/observed_species.csv')
+species_observed_df = pd.read_csv('../csv-data/observed_species_with_name.csv')
 species_observed_df.to_sql(
     'species_observed',
     con=engine,

@@ -1,44 +1,47 @@
+import operator
+
 from backend_api.models.species import (
     InvasiveSpecies,
     InvasiveSpeciesSchema,
     SpeciesObservedWaterbody,
     SpeciesObservedWaterbodySchema,
-    SpeciesObservedGeoJsonSchema
+    SpeciesObservedGeoJsonSchema,
+    SpeciesObservedWaterBodyNested
 )
-from backend_api.models.waterbody import WaterBodyGeoJson, WaterBodyGeoJsonSchema
+from backend_api.models.waterbody import WaterBodyGeoJson, WaterBodyGeoJsonSchema, Waterbody
 from colour import Color as c
 from backend_api import db
+from sqlalchemy import asc, text
 
 def get_invasive_species():
     invasive = InvasiveSpecies()
     invasive_schema = InvasiveSpeciesSchema()
     all_invasive = invasive.get_all()
-    all_invasive = invasive_schema.dump(species, many=True)
+    all_invasive = invasive_schema.dump(all_invasive, many=True)
     return all_invasive
 
-def get_color_scale(max_):
+def get_color_scale(data):
     red = c("red")
     yellow = c("yellow")
-    colors = red.range_to(yellow, max_)
-    return {i+1:c for i,c in enumerate(colors)}
+    max_ = []
+    for i in data:
+        max_.append(i['distance'])
+    max_= max(max_)
+    colors = red.range_to(yellow, max_+1)
+    colors = {i: c.hex for i, c in enumerate(colors)}
+    new_data = []
+    for i in data:
+        color = colors[i['distance']]
+        i['color'] = color
+        new_data.append(i)
+    return new_data
 
 
-def get_species_observations_geojsons(id):
-    #create db session (a bit different from what we normally do)
-    session = db.session
+def get_species_observations(id):
+    table = SpeciesObservedWaterbody()
+    data = table.find_invasive_waterways_by_species_id(id)
+    schema = SpeciesObservedWaterbodySchema()
+    payload = schema.dump(data, many=True)
+    payload = get_color_scale(payload)
+    return payload
 
-    data = session.query(SpeciesObservedWaterbody).filter_by(species_id=id).join(WaterBodyGeoJson).all()
-    data = [{'species_observed': x[0], 'waterbody_geojsons': x[1]} for x in data]
-    schema = SpeciesObservedGeoJsonSchema()
-    return schema.dump(data, many=True)
-    # # get all observatsions of the species from database
-    # sow = SpeciesObservedWaterbody()
-    # species_obs = sow.find_invasive_waterways_by_species_id(id)
-    #
-    # # get their waterbody ids
-    # waterbody_ids = [i.waterbody_id for i in species_obs]
-    # wbgeojson = WaterBodyGeoJson()
-    # geojsontest = wbgeojson.find_by_ids(waterbody_ids)
-    # geojsonschema = WaterBodyGeoJsonSchema()
-    # all_geojsons = [geojsonschema.dump(i) for i in geojsontest]
-    # return all_geojsons

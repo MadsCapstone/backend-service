@@ -1,8 +1,8 @@
-"""initial migration
+"""migrate to cloud
 
-Revision ID: 58c715c630a6
+Revision ID: 5f11c267b0ae
 Revises: 
-Create Date: 2021-08-11 17:41:07.174917
+Create Date: 2021-08-13 22:34:57.711902
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '58c715c630a6'
+revision = '5f11c267b0ae'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -92,6 +92,7 @@ def upgrade():
     sa.Column('uid', sa.Integer(), nullable=False),
     sa.Column('species_id', sa.Integer(), nullable=True),
     sa.Column('waterbody_id', sa.Integer(), nullable=True),
+    sa.Column('waterbody_name', sa.String(length=255), nullable=True),
     sa.Column('distance', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['species_id'], ['species.id'], ),
     sa.ForeignKeyConstraint(['waterbody_id'], ['waterbody.id'], ),

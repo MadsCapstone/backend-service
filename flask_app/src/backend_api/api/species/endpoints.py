@@ -38,7 +38,7 @@ class ObservedSpecies(Resource):
         """Get observations and waterways by species_id"""
         request_data = species_reqparser.parse_args()
         species_id = request_data.get('species_id')
-        data = get_species_observations_geojsons(species_id)
+        data = get_species_observations(species_id)
         return data
 
 

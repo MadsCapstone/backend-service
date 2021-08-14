@@ -6,7 +6,7 @@ from flask import current_app
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import ForeignKey
 from sqlalchemy import asc, text
-from backend_api.models.waterbody import Waterbody, WaterBodyGeoJsonSchema
+from backend_api.models.waterbody import Waterbody, WaterBodyGeoJsonSchema, WaterBodySchema
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, fields
 from marshmallow import Schema
 
@@ -46,6 +46,7 @@ class SpeciesObservedWaterbody(db.Model):
     uid = db.Column(db.Integer, primary_key=True)
     species_id = db.Column(db.Integer, ForeignKey(Species.id))
     waterbody_id = db.Column(db.Integer, ForeignKey(Waterbody.id))
+    waterbody_name = db.Column(db.String(255))
     distance = db.Column(db.Integer)
 
     @classmethod
@@ -96,6 +97,10 @@ class SpeciesObservedWaterbodySchema(SQLAlchemyAutoSchema):
 class SpeciesObservedGeoJsonSchema(Schema):
     species_observed = fields.Nested(SpeciesObservedWaterbodySchema)
     waterbody_geojsons = fields.Nested(WaterBodyGeoJsonSchema)
+
+class SpeciesObservedWaterBodyNested(Schema):
+    species_observed = fields.Nested(SpeciesObservedWaterbodySchema)
+    waterbody = fields.Nested(WaterBodySchema)
 
 species_tables = {
     'species': Species,
