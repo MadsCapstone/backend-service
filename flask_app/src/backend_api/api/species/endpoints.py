@@ -41,5 +41,27 @@ class ObservedSpecies(Resource):
         data = get_species_observations(species_id)
         return data
 
+@species_ns.route("/impact", endpoint="Impact Relationships by Species_id")
+class ImpactRelationship(Resource):
+    """Get the json needed to build network of impact by species id"""
+    @species_ns.expect(species_reqparser)
+    @species_ns.response(int(HTTPStatus.OK), "Retrieved impact network for requested species")
+    @species_ns.response(int(HTTPStatus.BAD_REQUEST), "Request Was Bad")
+    @species_ns.response(int(HTTPStatus.INTERNAL_SERVER_ERROR), "Internal server error.")
+    def post(self):
+        """Get the impact relationships with focus node of species_id"""
+        request_data = species_reqparser.parse_args()
+        species_id = request_data.get('species_id')
+        payload = get_impact_network(species_id)
+        print(payload)
+        return payload
 
-
+@species_ns.route("/impactnetwork", endpoint="Impact Network For All ")
+class ImpactWeb(Resource):
+    """Get the json needed to build network of impact by species id"""
+    @species_ns.response(int(HTTPStatus.OK), "Retrieved impact network successfully")
+    @species_ns.response(int(HTTPStatus.BAD_REQUEST), "Request Was Bad")
+    @species_ns.response(int(HTTPStatus.INTERNAL_SERVER_ERROR), "Internal server error.")
+    def get(self):
+        """Get the impact relationships of all nodes (impact web)"""
+        pass

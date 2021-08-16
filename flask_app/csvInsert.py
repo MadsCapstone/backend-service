@@ -20,7 +20,7 @@ waterbodies_df.to_sql(
     'waterbody',
     con=engine,
     index=False,
-    if_exists='replace'
+    # if_exists='replace'
 )
 
 species_df = pd.read_csv('../csv-data/key_to_species.csv')
@@ -47,5 +47,12 @@ species_observed_df.to_sql(
     if_exists='replace'
 )
 
+impact_rel_df = pd.read_csv('../csv-data/impacter_impacted_relationship.csv')
+impact_rel_df.to_sql(
+    'impact_rel',
+    con=engine,
+    index=False,
+    if_exists='replace'
+)
 
 

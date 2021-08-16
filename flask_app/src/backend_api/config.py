@@ -12,7 +12,6 @@ CLOUDSQL_LOCAL = f"postgresql://{os.getenv('DB_USER', None)}:{os.getenv('DB_PASS
 CLOUDSQL_PROD = f"postgresql://{os.getenv('DB_USER', None)}:{os.getenv('DB_PASS', None)}@localhost:5432/{os.getenv('DB_NAME',None)}"
 MIGRATIONS = os.path.join(FLASK_APP_DIR, 'migrations')
 
-print(CLOUDSQL_LOCAL)
 
 class Config:
     """Base configuration."""
@@ -51,8 +50,7 @@ class LocalProductionConfig(Config):
     BCRYPT_LOG_ROUNDS = 13
     SQLALCHEMY_DATABASE_URI = CLOUDSQL_LOCAL
     PRESERVE_CONTEXT_ON_EXCEPTION = True
-    DEBUG = False
-
+    DEBUG = True
 class ProductionConfig(Config):
     """Production configuration."""
     TOKEN_EXPIRE_HOURS = 1

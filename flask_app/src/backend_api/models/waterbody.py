@@ -45,7 +45,7 @@ class WaterBodyGeoJson(db.Model):
     __tablename__ = "waterbody_geojson"
 
     uid = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.Integer, ForeignKey(Waterbody.id), ForeignKey("species_observed.waterbody_id"))
+    id = db.Column(db.Integer, ForeignKey(Waterbody.id))
     geojson = db.Column(db.JSON)
 
     @classmethod

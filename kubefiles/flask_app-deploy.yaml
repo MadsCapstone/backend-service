@@ -18,7 +18,7 @@ spec:
         ports:
         - containerPort: 8000
         command: ["gunicorn"]
-        args: ["-w", "1", "-b", "0.0.0.0:8000", "wsgi:app"]
+        args: ["-w", "4", "-b", "0.0.0.0:8000", "wsgi:app"]
         imagePullPolicy: Always
 #        resources:
 #          requests:

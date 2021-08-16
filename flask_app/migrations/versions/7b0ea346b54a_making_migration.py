@@ -1,8 +1,8 @@
-"""migrate to cloud
+"""making migration
 
-Revision ID: 5f11c267b0ae
+Revision ID: 7b0ea346b54a
 Revises: 
-Create Date: 2021-08-13 22:34:57.711902
+Create Date: 2021-08-15 19:50:40.425965
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5f11c267b0ae'
+revision = '7b0ea346b54a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -80,7 +80,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('impact_rel_dist',
-    sa.Column('uid', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('uid', sa.Integer(), nullable=False),
     sa.Column('impacter_id', sa.Integer(), nullable=True),
     sa.Column('impacted_id', sa.Integer(), nullable=True),
     sa.Column('distance', sa.Integer(), nullable=True),
@@ -96,13 +96,13 @@ def upgrade():
     sa.Column('distance', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['species_id'], ['species.id'], ),
     sa.ForeignKeyConstraint(['waterbody_id'], ['waterbody.id'], ),
-    sa.PrimaryKeyConstraint('uid')
+    sa.PrimaryKeyConstraint('uid'),
+    sa.UniqueConstraint('uid')
     )
     op.create_table('waterbody_geojson',
     sa.Column('uid', sa.Integer(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=True),
     sa.Column('geojson', sa.JSON(), nullable=True),
-    sa.ForeignKeyConstraint(['id'], ['species_observed.waterbody_id'], ),
     sa.ForeignKeyConstraint(['id'], ['waterbody.id'], ),
     sa.PrimaryKeyConstraint('uid')
     )

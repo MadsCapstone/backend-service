@@ -26,6 +26,10 @@ class Species(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(255))
 
+    @classmethod
+    def get_name_by_species_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
 class InvasiveSpecies(db.Model):
     """Invasive Species id and name"""
     __tablename__ = "invasive_species"
@@ -43,7 +47,7 @@ class SpeciesObservedWaterbody(db.Model):
         and waterbodies they are found in
     """
     __tablename__ = "species_observed"
-    uid = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, primary_key=True, unique=True)
     species_id = db.Column(db.Integer, ForeignKey(Species.id))
     waterbody_id = db.Column(db.Integer, ForeignKey(Waterbody.id))
     waterbody_name = db.Column(db.String(255))
@@ -61,18 +65,22 @@ class ImpactRelationship(db.Model):
     impacter_id = db.Column(db.Integer, primary_key=True)
     impacted_id = db.Column(db.Integer, primary_key=True)
 
+    @classmethod
+    def find_species_impact_by_id(cls, id):
+        return cls.query.filter_by(impacter_id=id).all()
+
 class ImpactRelationshipDistance(db.Model):
     """Relationship between species to make the vizualization for hierarchy"""
     __tablename__ = "impact_rel_dist"
 
-    uid = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    uid = db.Column(db.Integer, primary_key=True)
     impacter_id = db.Column(db.Integer, ForeignKey(Species.id))
     impacted_id = db.Column(db.Integer, ForeignKey(Species.id))
     distance = db.Column(db.Integer)
 
     @classmethod
     def find_invasive_impact_by_id(cls, id):
-        return cls.query.filter_by(impacter=id)
+        return cls.query.filter_by(impacter=id).all()
 
 
 """Model section for schema marshalling"""
