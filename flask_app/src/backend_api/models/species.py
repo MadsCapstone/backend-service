@@ -82,6 +82,50 @@ class ImpactRelationshipDistance(db.Model):
     def find_invasive_impact_by_id(cls, id):
         return cls.query.filter_by(impacter=id).all()
 
+class ImpacterRelationshipTarget(db.Model):
+    """This table queries for realtionship information for target db"""
+    __tablename__= "target_data_rel"
+
+    uid = db.Column(db.Integer, primary_key=True)
+    impacter = db.Column(db.String(255))
+    impacted = db.Column(db.String(255))
+    invasive_impacter = db.Column(db.Integer)
+    radius = db.Column(db.Integer)
+    theta = db.Column(db.Integer)
+    theta_two = db.Column(db.Integer)
+
+    @classmethod
+    def find_relationship_by_impacter_name(cls, name):
+        return cls.query.filter_by(impacter=name).all()
+
+    @classmethod
+    def find_relationship_by_impacted_name(cls, name):
+        return cls.query.filter_by(impacted=name, invasive_impacter=1).all()
+
+
+class ImpacterDropdown(db.Model):
+    """Dropdown for target viz impacter"""
+    __tablename__="target_dropdown_impacter"
+
+    uid = db.Column(db.Integer, primary_key=True)
+    impacter = db.Column(db.String(255))
+
+    @classmethod
+    def get_all_impacters(cls):
+        return cls.query.order_by(text("impacter asc")).all()
+
+class ImpactedDropdown(db.Model):
+    """Dropdown for target viz impacted"""
+    __tablename__="target_dropdown_impacted"
+
+    uid = db.Column(db.Integer, primary_key=True)
+    impacted = db.Column(db.String(255))
+
+    @classmethod
+    def get_all_impacted(cls):
+        return cls.query.order_by(text("impacted asc")).all()
+
+
 
 """Model section for schema marshalling"""
 class InvasiveSpeciesSchema(SQLAlchemyAutoSchema):
@@ -110,10 +154,27 @@ class SpeciesObservedWaterBodyNested(Schema):
     species_observed = fields.Nested(SpeciesObservedWaterbodySchema)
     waterbody = fields.Nested(WaterBodySchema)
 
+class ImpacterDropdownSchema(Schema):
+    class Meta:
+        model = ImpacterDropdown
+        include_relationship=True
+        load_instance = True
+
+class ImpactedDropdownSchema(Schema):
+    class Meta:
+        model = ImpactedDropdown
+        include_relationship=True
+        load_instance = True
+
+
+
 species_tables = {
     'species': Species,
     'invasive_species': InvasiveSpecies,
     'species_observed': SpeciesObservedWaterbody,
     'impact_rel': ImpactRelationship,
-    'impact_rel_dist': ImpactRelationshipDistance
+    'impact_rel_dist': ImpactRelationshipDistance,
+    "target_data_rel": ImpacterRelationshipTarget,
+    "target_dropdown_impacter": ImpacterDropdown,
+    "target_dropdown_impacted": ImpactedDropdown
 }

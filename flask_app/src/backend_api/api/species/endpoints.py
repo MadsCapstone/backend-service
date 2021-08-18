@@ -7,7 +7,7 @@ from flask import jsonify
 
 from backend_api.models.species import Species, InvasiveSpecies
 from backend_api.api.species.business import *
-from backend_api.api.species.dto import species_reqparser, species_model
+from backend_api.api.species.dto import species_reqparser, species_model, targetrel_reqparser
 
 
 species_ns = Namespace(name='species', validate=True)
@@ -56,7 +56,7 @@ class ImpactRelationship(Resource):
         print(payload)
         return payload
 
-@species_ns.route("/impactnetwork", endpoint="Impact Network For All ")
+@species_ns.route("/impactnetwork", endpoint="Impact Network For All")
 class ImpactWeb(Resource):
     """Get the json needed to build network of impact by species id"""
     @species_ns.response(int(HTTPStatus.OK), "Retrieved impact network successfully")
@@ -65,3 +65,44 @@ class ImpactWeb(Resource):
     def get(self):
         """Get the impact relationships of all nodes (impact web)"""
         pass
+
+@species_ns.route("/targetinvasive", endpoint="Invasives for target vizualization")
+class InvasiveSpeciesTargetDropdown(Resource):
+    """Defines endpoint for getting target invasives"""
+
+    @species_ns.response(int(HTTPStatus.OK), "Retrieved impacters list successfully")
+    @species_ns.response(int(HTTPStatus.BAD_REQUEST), "Request Was Bad")
+    @species_ns.response(int(HTTPStatus.INTERNAL_SERVER_ERROR), "Internal server error.")
+    def get(self):
+        """Get the impacter dropdown set of species"""
+        payload = get_target_invasive_dropdown()
+        return payload
+
+@species_ns.route("/targetimpacted", endpoint="Impacted species for target vizualization")
+class ImpactedSpeciesTargetDropdown(Resource):
+    """Defines endpoint for getting target impacted"""
+
+    @species_ns.response(int(HTTPStatus.OK), "Retrieved impacted species successfully")
+    @species_ns.response(int(HTTPStatus.BAD_REQUEST), "Request Was Bad")
+    @species_ns.response(int(HTTPStatus.INTERNAL_SERVER_ERROR), "Internal server error.")
+    def get(self):
+        """Get the impacter dropdown set of species"""
+        payload = get_target_impacted_dropdown()
+        return payload
+
+@species_ns.route("/targetimpactrel", endpoint="Get data for target visualization")
+class TargetImpactRelationship(Resource):
+    """Defines endpoint for getting target viz relationship data"""
+
+    @species_ns.expect(targetrel_reqparser)
+    @species_ns.response(int(HTTPStatus.OK), "Retrieved impact target viz successfully")
+    @species_ns.response(int(HTTPStatus.BAD_REQUEST), "Request Was Bad")
+    @species_ns.response(int(HTTPStatus.INTERNAL_SERVER_ERROR), "Internal server error.")
+    def post(self):
+        """Get the impacter dropdown set of species"""
+        requestdata = targetrel_reqparser.parse_args()
+        query_type = requestdata.get('query_type')
+        name = requestdata.get('name')
+        payload = get_target_relationship_data(name, query_type)
+        return payload
+

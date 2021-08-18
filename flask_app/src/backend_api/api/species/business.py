@@ -8,7 +8,12 @@ from backend_api.models.species import (
     SpeciesObservedGeoJsonSchema,
     SpeciesObservedWaterBodyNested,
     ImpactRelationship,
-    Species
+    Species,
+    ImpacterRelationshipTarget,
+    ImpacterDropdown,
+    ImpactedDropdown,
+    ImpacterDropdownSchema,
+    ImpactedDropdownSchema
 )
 from backend_api.models.waterbody import WaterBodyGeoJson, WaterBodyGeoJsonSchema, Waterbody
 from colour import Color as c
@@ -58,6 +63,7 @@ def get_species_observations(id):
     else:
         return []
 
+""" Defines the code for business logic of building Network Invasives"""
 table_species = Species()
 class Node:
     def __init__(self, id):
@@ -113,6 +119,69 @@ def get_impact_network(id):
     payload.nodes = gd.nodes
     payload.links = gd.links
     return jsonify(payload.__dict__)
+
+
+def get_target_invasive_dropdown():
+    invasive_table = ImpacterDropdown()
+    invasive_schema = ImpacterDropdownSchema()
+    data = invasive_table.get_all_impacters()
+    schema = {
+        'uid':[],
+        'impacter':[]
+    }
+    for entry in data:
+        schema['uid'].append(entry.uid)
+        schema['impacter'].append(entry.impacter)
+    return jsonify(schema)
+
+
+def get_target_impacted_dropdown():
+    impacted_table = ImpactedDropdown()
+    impacted_schema = ImpactedDropdownSchema()
+    data = impacted_table.get_all_impacted()
+    schema = {
+        'uid':[],
+        'impacted':[]
+    }
+    for entry in data:
+        schema['uid'].append(entry.uid)
+        schema['impacted'].append(entry.impacted)
+
+    return jsonify(schema)
+
+
+class ImpactRelDef:
+    def __init__(self, data, query_type):
+        self.schema = {
+            'r': [],
+            'theta': [],
+            'mode': "text",
+            'text': []
+        }
+
+        for entry in data:
+            self.schema['r'].append(entry.radius)
+            if query_type == "impacter":
+                self.schema['theta'].append(entry.theta)
+                self.schema['text'].append(entry.impacted)
+            if query_type == "impacted":
+                self.schema['theta'].append(entry.theta_two)
+                self.schema['text'].append(entry.impacter)
+
+    def get_schema(self):
+        return self.schema
+
+
+def get_target_relationship_data(name, query_type):
+    target_data_rel = ImpacterRelationshipTarget()
+    if query_type=="impacter":
+        data = target_data_rel.find_relationship_by_impacter_name(name)
+    if query_type=="impacted":
+        data = target_data_rel.find_relationship_by_impacted_name(name)
+    ird = ImpactRelDef(data, query_type)
+    payload = ird.get_schema()
+    payload = jsonify(payload)
+    return payload
 
 
 

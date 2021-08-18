@@ -12,6 +12,14 @@ species_reqparser.add_argument(
     name="species_id", type=int, location="json", required=True, nullable=False
 )
 
+targetrel_reqparser = RequestParser(bundle_errors=True)
+targetrel_reqparser.add_argument(
+    name="name", type=str, location="json", required=True, nullable=False
+)
+targetrel_reqparser.add_argument(
+    name="query_type", type=str, location="json", required=True, nullable=False
+)
+
 species_model = Model(
     "Species",
     {

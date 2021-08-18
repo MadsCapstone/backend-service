@@ -15,13 +15,13 @@ waterbody_geojson_df.to_sql(
 )
 
 
-waterbodies_df = pd.read_csv('../csv-data/waterbodies.csv')
-waterbodies_df.to_sql(
-    'waterbody',
-    con=engine,
-    index=False,
-    # if_exists='replace'
-)
+# waterbodies_df = pd.read_csv('../csv-data/waterbodies.csv')
+# waterbodies_df.to_sql(
+#     'waterbody',
+#     con=engine,
+#     index=False,
+#     # if_exists='replace'
+# )
 
 species_df = pd.read_csv('../csv-data/key_to_species.csv')
 species_df.to_sql(
@@ -55,4 +55,26 @@ impact_rel_df.to_sql(
     if_exists='replace'
 )
 
+target_invasive_dropdown_df = pd.read_csv('../csv-data/impacters.csv')
+target_invasive_dropdown_df.to_sql(
+    "target_dropdown_impacter",
+    con=engine,
+    index=False,
+    if_exists='replace'
+)
 
+target_impacted_dropdown_df = pd.read_csv('../csv-data/impacteds.csv')
+target_impacted_dropdown_df.to_sql(
+    "target_dropdown_impacted",
+    con=engine,
+    index=False,
+    if_exists='replace'
+)
+
+target_data_rel_df = pd.read_csv('../csv-data/foodweb.csv')
+target_data_rel_df.to_sql(
+    "target_data_rel",
+    con=engine,
+    index=False,
+    if_exists='replace'
+)
