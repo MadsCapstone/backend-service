@@ -30,6 +30,10 @@ class Species(db.Model):
     def get_name_by_species_id(cls, id):
         return cls.query.filter_by(id=id).first()
 
+    @classmethod
+    def get_all_records(cls):
+        return cls.query.all()
+
 class InvasiveSpecies(db.Model):
     """Invasive Species id and name"""
     __tablename__ = "invasive_species"

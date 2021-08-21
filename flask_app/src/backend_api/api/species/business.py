@@ -66,11 +66,28 @@ def get_species_observations(id):
 
 """ Defines the code for business logic of building Network Invasives"""
 table_species = Species()
+table_impact_rel = ImpactRelationship()
 class Node:
     def __init__(self, id):
         self.name = table_species.get_name_by_species_id(id).name
         self.id = str(id)
         self.img_url = None
+        self.neighbors = []
+        self.links = []
+        self.impacted = [{'impacted': i.impacted_id, 'impacter': i.impacter_id} for i in table_impact_rel.find_species_impact_by_id(self.id)]
+        self.__update_child_nodes()
+        self.__update_child_links()
+
+    def __update_child_nodes(self):
+        for impact in self.impacted:
+            self.neighbors.append(impact['impacted'])
+
+    def __update_child_links(self):
+        for impact in self.impacted:
+            l = Link()
+            l.source = impact['impacter']
+            l.target = impact['impacted']
+            self.links.append(l.__dict__)
 
 class Link:
     source = None
@@ -84,6 +101,7 @@ class graphDataStore:
     def add_nodes(self, node):
         self.seen_nodes.add(node)
         n = Node(node)
+
         self.nodes.append(n.__dict__)
 
     def add_links(self, source, target):
