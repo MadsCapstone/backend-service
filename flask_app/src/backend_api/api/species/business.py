@@ -200,7 +200,7 @@ class ImpactRelDef:
             self.schema['text'].extend(['<i> >>>   First Order   <<< </i>', '<i> >>>   Second Order   <<< </i>', '<i> >>>   Third Order   <<< </i>'])
         self.schema['r'].extend([0.5, 1.5, 2.5])
         self.schema['theta'].extend([90,90,90])
-        self.schema['textfont']['color'].extend(['darkgray','darklightgray','darklightgray'])
+        self.schema['textfont']['color'].extend(['gray','gray','gray'])
         self.schema['textfont']['size'].extend([12,12,12])
 
     def get_schema(self):
