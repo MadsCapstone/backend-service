@@ -187,18 +187,18 @@ class ImpactRelDef:
             if query_type == "impacter":
                 self.schema['theta'].append(entry.theta)
                 self.schema['text'].append(entry.impacted)
-                self.schema['text_font']['color'].append('black')
-                self.schema['text_font']['size'].append(8)
+                self.schema['textfont']['color'].append('black')
+                self.schema['textfont']['size'].append(8)
             if query_type == "impacted":
                 self.schema['theta'].append(entry.theta_two)
                 self.schema['text'].append(entry.impacter)
-                self.schema['text_font']['color'].append('black')
-                self.schema['text_font']['size'].append(8)
+                self.schema['textfont']['color'].append('black')
+                self.schema['textfont']['size'].append(8)
         self.schema['r'].extend([0.5, 1.5, 2.5])
         self.schema['theta'].extend([90,90,90])
         self.schema['text'].extend(['first','second','third'])
-        self.schema['text_font']['color'].extend(['lightgray','lightgray','lightgray'])
-        self.schema['text_font']['size'].extend([12,12,12])
+        self.schema['textfont']['color'].extend(['lightgray','lightgray','lightgray'])
+        self.schema['textfont']['size'].extend([12,12,12])
 
     def get_schema(self):
         return self.schema
