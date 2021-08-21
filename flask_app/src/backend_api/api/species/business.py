@@ -176,7 +176,7 @@ class ImpactRelDef:
             'theta': [],
             'mode': "text",
             'text': [],
-            'text_font':{
+            'textfont':{
                 'color':[],
                 'size':[]
             }
