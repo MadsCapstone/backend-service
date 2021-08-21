@@ -1,8 +1,8 @@
-"""making migration
+"""making migrations
 
-Revision ID: 7b0ea346b54a
+Revision ID: 4d360736052c
 Revises: 
-Create Date: 2021-08-15 19:50:40.425965
+Create Date: 2021-08-20 17:46:13.834407
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7b0ea346b54a'
+revision = '4d360736052c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -44,6 +44,26 @@ def upgrade():
     sa.Column('name', sa.String(length=255), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
+    )
+    op.create_table('target_data_rel',
+    sa.Column('uid', sa.Integer(), nullable=False),
+    sa.Column('impacter', sa.String(length=255), nullable=True),
+    sa.Column('impacted', sa.String(length=255), nullable=True),
+    sa.Column('invasive_impacter', sa.Integer(), nullable=True),
+    sa.Column('radius', sa.Integer(), nullable=True),
+    sa.Column('theta', sa.Integer(), nullable=True),
+    sa.Column('theta_two', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('uid')
+    )
+    op.create_table('target_dropdown_impacted',
+    sa.Column('uid', sa.Integer(), nullable=False),
+    sa.Column('impacted', sa.String(length=255), nullable=True),
+    sa.PrimaryKeyConstraint('uid')
+    )
+    op.create_table('target_dropdown_impacter',
+    sa.Column('uid', sa.Integer(), nullable=False),
+    sa.Column('impacter', sa.String(length=255), nullable=True),
+    sa.PrimaryKeyConstraint('uid')
     )
     op.create_table('test_data',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -91,11 +111,10 @@ def upgrade():
     op.create_table('species_observed',
     sa.Column('uid', sa.Integer(), nullable=False),
     sa.Column('species_id', sa.Integer(), nullable=True),
-    sa.Column('waterbody_id', sa.Integer(), nullable=True),
     sa.Column('waterbody_name', sa.String(length=255), nullable=True),
     sa.Column('distance', sa.Integer(), nullable=True),
+    sa.Column('on_network', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['species_id'], ['species.id'], ),
-    sa.ForeignKeyConstraint(['waterbody_id'], ['waterbody.id'], ),
     sa.PrimaryKeyConstraint('uid'),
     sa.UniqueConstraint('uid')
     )
@@ -119,6 +138,9 @@ def downgrade():
     op.drop_table('waterbody')
     op.drop_table('token_blacklist')
     op.drop_table('test_data')
+    op.drop_table('target_dropdown_impacter')
+    op.drop_table('target_dropdown_impacted')
+    op.drop_table('target_data_rel')
     op.drop_table('species')
     op.drop_table('site_user')
     op.drop_table('invasive_species')

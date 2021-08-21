@@ -58,6 +58,7 @@ def get_species_observations(id):
     schema = SpeciesObservedWaterbodySchema()
     payload = schema.dump(data, many=True)
     payload = get_color_scale(payload)
+    print(payload)
     if payload:
         return payload
     else:
@@ -184,7 +185,7 @@ def get_target_relationship_data(name, query_type):
     return payload
 
 
-
-
+def get_impact_network_full():
+    pass
 
 

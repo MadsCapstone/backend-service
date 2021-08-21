@@ -49,13 +49,18 @@ class SpeciesObservedWaterbody(db.Model):
     __tablename__ = "species_observed"
     uid = db.Column(db.Integer, primary_key=True, unique=True)
     species_id = db.Column(db.Integer, ForeignKey(Species.id))
-    waterbody_id = db.Column(db.Integer, ForeignKey(Waterbody.id))
+    # waterbody_id = db.Column(db.Integer, ForeignKey(Waterbody.id))
     waterbody_name = db.Column(db.String(255))
     distance = db.Column(db.Integer)
+    on_network = db.Column(db.Integer)
 
     @classmethod
     def find_invasive_waterways_by_species_id(cls, id):
         return cls.query.filter_by(species_id=id).all()
+
+    @classmethod
+    def find_invasive_waterways_by_species_id_only_relevant(cls, id):
+        return cls.query.filter_by(species_id=id)
 
 
 class ImpactRelationship(db.Model):
@@ -68,6 +73,11 @@ class ImpactRelationship(db.Model):
     @classmethod
     def find_species_impact_by_id(cls, id):
         return cls.query.filter_by(impacter_id=id).all()
+
+    @classmethod
+    def get_all_records(cls):
+        return cls.query.all()
+
 
 class ImpactRelationshipDistance(db.Model):
     """Relationship between species to make the vizualization for hierarchy"""
