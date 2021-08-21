@@ -194,6 +194,11 @@ class ImpactRelDef:
                 self.schema['text'].append(entry.impacter)
                 self.schema['textfont']['color'].append('black')
                 self.schema['textfont']['size'].append(8)
+                self.schema['text'].extend(['first', 'second', 'third'])
+        if query_type == "impacter":
+            self.schema['text'].extend(['<i> <<<   First Order   >>> </i>', '<i> <<<   Second Order   >>> </i>', '<i> <<<   Third Order   >>> </i>'])
+        if query_type == "impacted":
+            self.schema['text'].extend(['<i> >>>   First Order   <<< </i>', '<i> >>>   Second Order   <<< </i>', '<i> >>>   Third Order   <<< </i>'])
         self.schema['r'].extend([0.5, 1.5, 2.5])
         self.schema['theta'].extend([90,90,90])
         self.schema['text'].extend(['first','second','third'])
