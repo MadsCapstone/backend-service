@@ -11,3 +11,4 @@ __pycache__
 kubefiles/acme_issuer_private_key.yaml
 csv-data
 .DS_Store
+flask_app/csvInsert.py
